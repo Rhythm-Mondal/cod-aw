@@ -14,6 +14,9 @@ clock = pygame.time.Clock()
 condition = True
 
 
+current_environment = Environment({"left": 0, "right": 512, "top": 0, "bottom": 512}, [], [])
+
+
 while condition:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

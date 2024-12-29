@@ -1,14 +1,7 @@
-class Environment:
-    def __init__(self, boundaries, elements, agents):
-        self.boundaries = boundaries
-        self.elements = elements
-        self.agents = agents
-
-    def update(self, agent, agent_response):
-        pass
-
-    def get_display_representation(self):
-        pass
+import random
+import base64
+from datetime import datetime, UTC
+from math import sqrt
 
 
 class Agent:
@@ -29,6 +22,43 @@ class Agent:
     def _fall_back(self, current_environment):
         pass
 
+
+class Environment:
+    def __init__(self, boundaries, elements, agents: list[Agent]):
+        self.boundaries: dict = boundaries
+        self.elements: list = elements
+        self.agents: dict = {}
+        for agent in agents:
+            self.add_agent(agent)
+
+    def update(self, agent, agent_response):
+        pass
+
+    def get_display_representation(self):
+        pass
+
+    def add_agent(self, agent: Agent = None):
+        if agent is not None:
+            agent.attributes["id"] = base64.b64encode(str(datetime.now(tz=UTC).timestamp()).encode()).decode()
+            self.agents.update({agent.attributes["id"]: agent})
+            return
+
+        agent_id = base64.b64encode(str(datetime.now(tz=UTC).timestamp()).encode()).decode()
+        orient_comp = random.random()
+        attributes = {
+            "id": base64.b64encode(str(datetime.now(tz=UTC).timestamp()).encode()).decode(),
+            "color": "red",
+            "position": {
+                "x": self.boundaries["right"]*random.random()+self.boundaries["left"],
+                "y": self.boundaries["bottom"]*random.random()+self.boundaries["top"]
+            },
+            "orientation": {
+                "x": orient_comp,
+                "y": sqrt(1 - orient_comp*orient_comp)
+            }
+        }
+
+        self.agents.update({agent_id: Agent({}, attributes, {})})
 
 
 
