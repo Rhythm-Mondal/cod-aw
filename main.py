@@ -1,17 +1,15 @@
 import json
 import pygame
 
+from utills.models import Settings
 
-with open("settings.json", "w+") as f:
-    settings = json.load(f)
+
+with open("settings.json", "r") as f:
+    data = json.load(f)
+    settings = Settings(**data)
 
 pygame.init()
-display = pygame.display.set_mode(
-    (
-        settings.get("display", {}).get("width", 720),
-        settings.get("display", {}).get("height", 1280),
-    )
-)
+display = pygame.display.set_mode((settings.display.width, settings.display.height))
 clock = pygame.time.Clock()
 condition = True
 
@@ -22,7 +20,6 @@ while condition:
 
         display.fill("white")
         pygame.display.flip()
-
         clock.tick(60)
 
 pygame.quit()
